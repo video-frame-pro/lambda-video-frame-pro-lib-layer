@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # Para interromper o script em caso de erro
+set -e  # Interrompe o script em caso de erro
 
 echo "🚀 Iniciando Build da Layer..."
 
@@ -12,12 +12,19 @@ mkdir -p layer/python/lib/python3.12/site-packages
 echo "📥 Baixando FFmpeg..."
 FFMPEG_URL="https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz"
 curl -L $FFMPEG_URL -o ffmpeg.tar.xz
-tar -xvf ffmpeg.tar.xz --strip-components=1 --wildcards '*/ffmpeg' -C layer/bin
+mkdir -p ffmpeg-temp
+tar -xvf ffmpeg.tar.xz -C ffmpeg-temp --strip-components=1
+mv ffmpeg-temp/ffmpeg layer/bin/ffmpeg
 chmod +x layer/bin/ffmpeg
+rm -rf ffmpeg-temp ffmpeg.tar.xz
 
-# Instalar bibliotecas Python
-echo "🐍 Instalando dependências Python..."
-pip install -r scripts/requirements.txt -t layer/python/lib/python3.12/site-packages
+# Instalar bibliotecas Python, se o arquivo existir
+if [[ -f requirements.txt ]]; then
+  echo "🐍 Instalando dependências Python..."
+  pip install -r requirements.txt -t layer/python/lib/python3.12/site-packages
+else
+  echo "⚠️ Aviso: Arquivo requirements.txt não encontrado. Pulando instalação de dependências."
+fi
 
 # Criar o ZIP da Layer
 echo "📦 Criando o pacote da Layer..."
