@@ -16,12 +16,17 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Install AWS CLI
+      - name: Check AWS CLI Version
+        run: aws --version || echo "AWS CLI not found"
+
+      - name: Update AWS CLI (if needed)
         run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
-          aws --version  # Verifica se a instalação foi bem-sucedida
+          if ! aws --version; then
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install --update
+          fi
+          aws --version  # Verifica se a atualização foi bem-sucedida
 
       - name: Build Lambda Layer
         run: |
