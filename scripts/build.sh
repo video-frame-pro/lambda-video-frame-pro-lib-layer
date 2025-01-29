@@ -19,9 +19,9 @@ chmod +x layer/bin/ffmpeg
 rm -rf ffmpeg-temp ffmpeg.tar.xz
 
 # Instalar bibliotecas Python, se o arquivo existir
-if [[ -f requirements.txt ]]; then
+if [[ -f scripts/requirements.txt ]]; then
   echo "🐍 Instalando dependências Python..."
-  pip install -r requirements.txt -t layer/python/lib/python3.12/site-packages
+  pip install -r scripts/requirements.txt -t layer/python/lib/python3.12/site-packages
 else
   echo "⚠️ Aviso: Arquivo requirements.txt não encontrado. Pulando instalação de dependências."
 fi
