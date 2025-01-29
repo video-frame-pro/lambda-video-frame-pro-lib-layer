@@ -92,7 +92,7 @@ resource "aws_lambda_function" "lambda_processing" {
 
   environment {
     variables = {
-      BUCKET_NAME = "video-frame-pro-s3"
+      BUCKET_NAME = "video-frame-pro-layers-s3"
     }
   }
 }
