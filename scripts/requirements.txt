@@ -1,4 +1,2 @@
-pillow
 boto3
-numpy
-opencv-python-headless
+
